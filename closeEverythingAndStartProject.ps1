@@ -42,6 +42,8 @@ while ($true) {
 (New-Object -comObject Shell.Application).Windows() | foreach-object {$_.quit()}
 Write-Host "All windows closed gracefully"
 
+Write-Host "TODO: close problematic processes (dropbox, adobe update crap, etc..."
+
 # From http://blog.danskingdom.com/allow-others-to-run-your-powershell-scripts-from-a-batch-file-they-will-love-you-for-it/
 # If running in the console, wait for input before closing.
 if ($Host.Name -eq "ConsoleHost")
