@@ -35,8 +35,8 @@ do {
     #| % { [SFW]::SetForegroundWindow($_.MainWindowHandle) -and $_.CloseMainWindow() }
 } while (true)
 # Close all explorer
-
 #(New-Object -comObject Shell.Application).Windows() | foreach-object {$_.quit()}
+"All windows closed gracefully"
 
 # From http://blog.danskingdom.com/allow-others-to-run-your-powershell-scripts-from-a-batch-file-they-will-love-you-for-it/
 # If running in the console, wait for input before closing.
