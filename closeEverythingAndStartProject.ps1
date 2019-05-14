@@ -1,5 +1,5 @@
 # Hello, here is the list of customization points
-# 
+# TODO
 
 
 # From https://stackoverflow.com/questions/37648262/using-powershell-script-to-kill-process-but-access-deined -> go admin
@@ -28,15 +28,19 @@ Add-Type @"
 
 # Originaly from https://stackoverflow.com/questions/9725629/how-to-close-all-windows
 # Close all windows
-do {
+while ($true) {
     $process_list = (get-process | ? { $_.mainwindowtitle -ne "" -and $_.processname -ne "cmd" -and $_.processname -ne "powershell" -and $_.processname -notmatch "Ableton.*" } )
-    if ($process_list.Count -eq 0) {break}
-    "Still $process_list.Count processes to close"
-    #| % { [SFW]::SetForegroundWindow($_.MainWindowHandle) -and $_.CloseMainWindow() }
-} while (true)
+    $process_list_measure = $process_list | measure
+    if ($process_list_measure.Count -eq 0) {break}
+    Write-Host "Still $($process_list_measure.Count) processes to close :"
+    $process_list | % { Write-Host " * $($_.processname) :: $($_.mainwindowtitle)" }
+    $process_list | % { [SFW]::SetForegroundWindow($_.MainWindowHandle) -and $_.CloseMainWindow() }
+    # When one window is blocked in a modal, we want to let the user handle the closing and indicates that the script can continue
+    Read-Host -Prompt "Press Enter to continue"
+}
 # Close all explorer
-#(New-Object -comObject Shell.Application).Windows() | foreach-object {$_.quit()}
-"All windows closed gracefully"
+(New-Object -comObject Shell.Application).Windows() | foreach-object {$_.quit()}
+Write-Host "All windows closed gracefully"
 
 # From http://blog.danskingdom.com/allow-others-to-run-your-powershell-scripts-from-a-batch-file-they-will-love-you-for-it/
 # If running in the console, wait for input before closing.
